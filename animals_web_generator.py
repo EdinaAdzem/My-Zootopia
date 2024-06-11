@@ -10,14 +10,17 @@ def display_animal_data(data):
     output = ''
     for animal in data:
         if "name" in animal:
-            output += f"Name: {animal['name']}"
+            #call cards_item class to appli list item style
+            output += '<li class="cards__item">'
+            output += f"Name: {animal['name']}<br/>\n"
         if "characteristics" in animal and "diet" in animal["characteristics"]:
-            output += f"Diet: {animal['characteristics']['diet']}"
+            output += f"Diet: {animal['characteristics']['diet']}<br/>\n"
         if "locations" in animal:
-            output += f"Location: {animal['locations'][0]}"
+            output += f"Location: {animal['locations'][0]}<br/>\n"
         if "characteristics" in animal and "type" in animal["characteristics"]:
-            output += f"Type: {animal['characteristics']['type']}"
+            output += f"Type: {animal['characteristics']['type']}<br/>\n"
         output += "<br/>\n"
+        output += '</li>'
     return output
 
 def load_template(template_path):
