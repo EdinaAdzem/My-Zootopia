@@ -2,26 +2,35 @@ import json
 
 def load_data(file_path):
     """Function to load the JSON file"""
-    with open(file_path, "r") as handle:
+    with open(file_path, "r", encoding="utf-8") as handle:
         return json.load(handle)
 
 def display_animal_data(data):
-    """read and print the animal_data contents"""
+    """Read and print the animal data contents"""
     output = ''
     for animal in data:
         if "name" in animal:
-            #call cards_item class to appli list item style
             output += '<li class="cards__item">'
+            output += '<div class="card__title">'
             output += f"Name: {animal['name']}<br/>\n"
-        if "characteristics" in animal and "diet" in animal["characteristics"]:
-            output += f"Diet: {animal['characteristics']['diet']}<br/>\n"
-        if "locations" in animal:
-            output += f"Location: {animal['locations'][0]}<br/>\n"
-        if "characteristics" in animal and "type" in animal["characteristics"]:
-            output += f"Type: {animal['characteristics']['type']}<br/>\n"
-        output += "<br/>\n"
-        output += '</li>'
+            output += '</div>'
+            output += '<p class="card__text">'
+            if "locations" in animal:
+                first_location = animal['locations'][0]  # Get the location directly
+                output += f"<strong>Location:</strong> {first_location}<br/>\n"
+            if "characteristics" in animal:
+                characteristics = animal["characteristics"]
+                if "type" in characteristics:
+                    output += f"<strong>Type:</strong> {characteristics['type']}<br/>\n"
+                if "diet" in characteristics:
+                    output += f"<strong>Diet:</strong> {characteristics['diet']}<br/>\n"
+            output += '</p>'
+            output += '</li>'
     return output
+
+
+
+
 
 def load_template(template_path):
     """Read and return the content of the HTML template"""
