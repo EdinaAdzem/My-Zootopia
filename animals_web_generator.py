@@ -20,6 +20,12 @@ def display_animal_data(data):
                 output += f"<strong>Location:</strong> {first_location}<br/>\n"
             if "characteristics" in animal:
                 characteristics = animal["characteristics"]
+                if "distinctive_feature" in characteristics:
+                    output += f"<strong>Distinctive Features:</strong> {characteristics['distinctive_feature']}<br/>\n"
+                if "temperament" in characteristics:
+                    output += f"<strong>Temperament:</strong> {characteristics['temperament']}<br/>\n"
+                if "lifespan" in characteristics:
+                    output += f"<strong>Lifespan:</strong> {characteristics['lifespan']}<br/>\n"
                 if "type" in characteristics:
                     output += f"<strong>Type:</strong> {characteristics['type']}<br/>\n"
                 if "diet" in characteristics:
@@ -29,7 +35,31 @@ def display_animal_data(data):
     return output
 
 
+def serialize_animal(animal_object):
+    """changes to a single animal"""
+    output = ''
+    output += '<li class="cards__item">\n'
+    output += f'<div class="card__title">{animal_object["name"]}</div>\n'
+    output += '<p class="card__text">\n'
 
+    if "locations" in animal_object:
+        first_location = animal_object['locations'][0]
+        output += f"<strong>Location:</strong> {first_location}<br/>\n"
+
+    if "characteristics" in animal_object:
+        characteristics = animal_object["characteristics"]
+        if "group" in characteristics:
+            output += f"<strong>Group:</strong> {characteristics['group']}<br/>\n"
+        if "lifespan" in characteristics:
+            output += f"<strong>Lifespan:</strong> {characteristics['lifespan']}<br/>\n"
+        if "type" in characteristics:
+            output += f"<strong>Type:</strong> {characteristics['type']}<br/>\n"
+        if "diet" in characteristics:
+            output += f"<strong>Diet:</strong> {characteristics['diet']}<br/>\n"
+
+    output += '</p>\n'
+    output += '</li>\n'
+    return output
 
 
 def load_template(template_path):
