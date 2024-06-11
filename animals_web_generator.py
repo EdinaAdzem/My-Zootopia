@@ -2,23 +2,65 @@ import json
 
 def load_data(file_path):
     """Function to load the JSON file"""
-    with open(file_path, "r") as handle:
+    with open(file_path, "r", encoding="utf-8") as handle:
         return json.load(handle)
 
 def display_animal_data(data):
-    """read and print the animal_data contents"""
+    """Read and print the animal data contents"""
     output = ''
     for animal in data:
         if "name" in animal:
-            output += f"Name: {animal['name']}"
-        if "characteristics" in animal and "diet" in animal["characteristics"]:
-            output += f"Diet: {animal['characteristics']['diet']}"
-        if "locations" in animal:
-            output += f"Location: {animal['locations'][0]}"
-        if "characteristics" in animal and "type" in animal["characteristics"]:
-            output += f"Type: {animal['characteristics']['type']}"
-        output += "<br/>\n"
+            output += '<li class="cards__item">'
+            output += '<div class="card__title">'
+            output += f"Name: {animal['name']}<br/>\n"
+            output += '</div>'
+            output += '<p class="card__text">'
+            if "locations" in animal:
+                first_location = animal['locations'][0]  # Get the location directly
+                output += f"<strong>Location:</strong> {first_location}<br/>\n"
+            if "characteristics" in animal:
+                characteristics = animal["characteristics"]
+                if "distinctive_feature" in characteristics:
+                    output += f"<strong>Distinctive Features:</strong> {characteristics['distinctive_feature']}<br/>\n"
+                if "temperament" in characteristics:
+                    output += f"<strong>Temperament:</strong> {characteristics['temperament']}<br/>\n"
+                if "lifespan" in characteristics:
+                    output += f"<strong>Lifespan:</strong> {characteristics['lifespan']}<br/>\n"
+                if "type" in characteristics:
+                    output += f"<strong>Type:</strong> {characteristics['type']}<br/>\n"
+                if "diet" in characteristics:
+                    output += f"<strong>Diet:</strong> {characteristics['diet']}<br/>\n"
+            output += '</p>'
+            output += '</li>'
     return output
+
+
+def serialize_animal(animal_object):
+    """changes to a single animal"""
+    output = ''
+    output += '<li class="cards__item">\n'
+    output += f'<div class="card__title">{animal_object["name"]}</div>\n'
+    output += '<p class="card__text">\n'
+
+    if "locations" in animal_object:
+        first_location = animal_object['locations'][0]
+        output += f"<strong>Location:</strong> {first_location}<br/>\n"
+
+    if "characteristics" in animal_object:
+        characteristics = animal_object["characteristics"]
+        if "group" in characteristics:
+            output += f"<strong>Group:</strong> {characteristics['group']}<br/>\n"
+        if "lifespan" in characteristics:
+            output += f"<strong>Lifespan:</strong> {characteristics['lifespan']}<br/>\n"
+        if "type" in characteristics:
+            output += f"<strong>Type:</strong> {characteristics['type']}<br/>\n"
+        if "diet" in characteristics:
+            output += f"<strong>Diet:</strong> {characteristics['diet']}<br/>\n"
+
+    output += '</p>\n'
+    output += '</li>\n'
+    return output
+
 
 def load_template(template_path):
     """Read and return the content of the HTML template"""
