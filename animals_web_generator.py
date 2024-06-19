@@ -18,8 +18,12 @@ def load_data(animal_name):
     animals = response.json()
     return animals
 
-def display_animal_data(data):
+def display_animal_data(data,animal_name):
     """Read and print the animal data contents"""
+    #milestone 3 if the animal is not there
+    if not data:
+        return f'<h2>The animal "{animal_name}" doesn\'t exist.</h2>'
+
     output = ''
     for animal in data:
         if "name" in animal:
@@ -45,6 +49,8 @@ def display_animal_data(data):
                     output += f"<strong>Diet:</strong> {characteristics['diet']}<br/>\n"
             output += '</p>'
             output += '</li>'
+        else:
+            print("The animal ""goadohjasgfas" "doesn't exist.")
     return output
 
 def serialize_animal(animal_object):
@@ -89,7 +95,7 @@ def write_html(content, output_path):
 
 def main():
     # Define the animal name
-    animal_name = "Fox"
+    animal_name = input("Please enter the name of the animal:")
 
     # Load the animal data from the API
     animals_data = load_data(animal_name)
@@ -98,7 +104,7 @@ def main():
     template_new_content = load_template("animals_template.html")
 
     # Generate the animals information
-    animals_info = display_animal_data(animals_data)
+    animals_info = display_animal_data(animals_data,animal_name)
 
     # Replace with animal info
     new_animal_info_content = replace_placeholder(template_new_content, animals_info)
