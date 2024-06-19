@@ -1,9 +1,22 @@
+import requests
 import json
 
-def load_data(file_path):
-    """Function to load the JSON file"""
-    with open(file_path, "r", encoding="utf-8") as handle:
-        return json.load(handle)
+# Constants defined outside main
+API_KEY = '3KuGd18Jt2pFK1xXj44zGA==tuRW35T7QHTvzoml'
+BASE_URL = 'https://api.api-ninjas.com/v1/animals'
+
+
+def load_data(animal_name):
+    """Function to load the API data"""
+    url = f'{BASE_URL}?name={animal_name}'
+
+    headers = {
+        'X-Api-Key': API_KEY
+    }
+
+    response = requests.get(url, headers=headers)
+    animals = response.json()
+    return animals
 
 def display_animal_data(data):
     """Read and print the animal data contents"""
@@ -16,7 +29,7 @@ def display_animal_data(data):
             output += '</div>'
             output += '<p class="card__text">'
             if "locations" in animal:
-                first_location = animal['locations'][0]  # Get the location directly
+                first_location = animal['locations'][0]
                 output += f"<strong>Location:</strong> {first_location}<br/>\n"
             if "characteristics" in animal:
                 characteristics = animal["characteristics"]
@@ -34,9 +47,8 @@ def display_animal_data(data):
             output += '</li>'
     return output
 
-
 def serialize_animal(animal_object):
-    """changes to a single animal"""
+    """Changes to a single animal"""
     output = ''
     output += '<li class="cards__item">\n'
     output += f'<div class="card__title">{animal_object["name"]}</div>\n'
@@ -61,7 +73,6 @@ def serialize_animal(animal_object):
     output += '</li>\n'
     return output
 
-
 def load_template(template_path):
     """Read and return the content of the HTML template"""
     with open(template_path, "r") as template_file:
@@ -76,9 +87,12 @@ def write_html(content, output_path):
     with open(output_path, "w") as output_file:
         output_file.write(content)
 
-if __name__ == "__main__":
-    # Load the animal data
-    animals_data = load_data("animals_data.json")
+def main():
+    # Define the animal name
+    animal_name = "Fox"
+
+    # Load the animal data from the API
+    animals_data = load_data(animal_name)
 
     # Load the template content
     template_new_content = load_template("animals_template.html")
@@ -86,8 +100,12 @@ if __name__ == "__main__":
     # Generate the animals information
     animals_info = display_animal_data(animals_data)
 
-    # replace wtih animal info
+    # Replace with animal info
     new_animal_info_content = replace_placeholder(template_new_content, animals_info)
 
     # Write the new content to the output file
     write_html(new_animal_info_content, "animals.html")
+
+
+if __name__ == "__main__":
+    main()
