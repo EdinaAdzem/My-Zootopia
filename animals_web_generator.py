@@ -1,25 +1,7 @@
-import requests
-import json
-
-# Constants defined outside main
-API_KEY = '3KuGd18Jt2pFK1xXj44zGA==tuRW35T7QHTvzoml'
-BASE_URL = 'https://api.api-ninjas.com/v1/animals'
-
-
-def load_data(animal_name):
-    """Function to load the API data"""
-    url = f'{BASE_URL}?name={animal_name}'
-
-    headers = {
-        'X-Api-Key': API_KEY
-    }
-
-    response = requests.get(url, headers=headers)
-    animals = response.json()
-    return animals
+import data_fetcher
 
 def display_animal_data(data,animal_name):
-    """Read and print the animal data contents"""
+    #Read and print the animal data contents
     #milestone 3 if the animal is not there
     if not data:
         return f'<h2>The animal "{animal_name}" doesn\'t exist.</h2>'
@@ -98,18 +80,21 @@ def main():
     animal_name = input("Please enter the name of the animal:")
 
     # Load the animal data from the API
-    animals_data = load_data(animal_name)
+    animals_data = data_fetcher.fetch_data(animal_name)
 
-    # Load the template content
+    for animal in animals_data:
+        print(f"{animal['name']} ({animal['locations']})")
+
+    #generate the animals info
+    animals_info = display_animal_data(animals_data, animal_name)
+
+    #templ
     template_new_content = load_template("animals_template.html")
 
-    # Generate the animals information
-    animals_info = display_animal_data(animals_data,animal_name)
-
-    # Replace with animal info
+    # Replace with animals content into inputed by the user
     new_animal_info_content = replace_placeholder(template_new_content, animals_info)
 
-    # Write the new content to the output file
+    #to the  output file
     write_html(new_animal_info_content, "animals.html")
 
 
